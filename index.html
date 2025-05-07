@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pre-training Auto-regressive Robotic Models with 4D Representations">
+  <meta name="keywords" content="Robotics, 4D Representations, Machine Learning">
+  <title>Pre-training Auto-regressive Robotic Models with 4D Representations</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/logo.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathJax Example</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Google Sans', sans-serif;
+      overflow: scroll;
+      scroll-behavior: smooth;
+    }
+  
+
+    
+    .hero {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+    
+.publication-title {
+  font-size: 4rem; 
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.publication-authors {
+  font-size: 1.7rem;
+  margin-bottom: 2rem; 
+}
+
+.bibtex-section {
+  width: 100%;
+  padding: 40px;
+  background: #f5f5f5;
+  border-top: 2px solid #ddd;
+  font-family: "Google Sans" sans-serif;
+  box-sizing: border-box;
+}
+
+.bibtex-section h2 {
+  margin-top: 0;
+  font-family: "Google Sans" sans-serif;
+}
+
+    
+    .author-block {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+    
+    .author-block a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    
+    .author-block a:hover {
+      text-decoration: underline;
+    }
+    
+    .publication-links {
+      margin-top: 1rem;
+    }
+    
+    .button {
+  display: inline-flex;
+  align-items: center;
+  background-color: #24292e;
+  color: white;
+  padding: 1.5rem 3rem;  
+  font-size: 1.6rem;     
+  border-radius: 2rem;
+  margin: 0.5rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button .icon {
+  font-size: 1.2rem; /* Increase icon size */
+  margin-right: 0.6rem;
+}
+
+    
+    .button:hover {
+      background-color: #0366d6;
+    }
+    
+    .icon {
+      margin-right: 0.5rem;
+    }
+    
+    .scroll-prompt {
+  position: absolute;
+  bottom: 50px;
+  right: 30px;
+  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  animation: pulse 5s infinite;
+  z-index: 10;
+}
+
+.scroll-prompt a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+.main-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.panel {
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.left {
+    background: #ffffff;
+}
+
+
+.panel.left {
+    background: #ffffff;
+    position: relative;
+    width: 100%; /* Ensure it takes full width */
+    height: 100vh; /* Ensure it takes full viewport height */
+    overflow: hidden; /* Hide anything outside of the container */
+}
+
+.left-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 1s ease-in-out;
+}
+
+.image-container {
+    height: auto;
+    width: 100%;
+    opacity: 0; /* Hide by default */
+    visibility: hidden;
+    position: absolute; /* Stack images on top of each other */
+    top: 0;
+    left: 0;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    height: auto;
+}
+
+
+.right {
+    overflow-y: scroll;
+    padding: 20px;
+    scrollbar-width: none;
+}
+
+/* WebKit browsers (Chrome, Safari) */
+.right::-webkit-scrollbar {
+  display: none;
+}
+
+/* Style for the right panel text blocks */
+.panel.right .text-block {
+  margin-bottom: 50px; /* Add space between sections */
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* Heading style */
+.panel.right .text-block h2 {
+  font-weight: bold; /* Make headings bold */
+  font-size: 1.5em;  /* Increase font size */
+  margin-bottom: 20px; /* Add space after heading */
+}
+
+/* Stylish separator line */
+.panel.right .text-block hr {
+  border: 0;
+  border-top: 2px solid #333;
+  margin: 30px 0;
+  width: 100px; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+    
+    
+
+    
+ 
+  </style>
+</head>
+<body>
+  <!-- Title Bar/Header -->
+  <section class="hero">
+    <div class="hero-body">
+      <div>
+        <img src="./static/images/logo.png" alt="Logo" id="arm4r-logo" width="150px">
+        <h1 class="title publication-title">
+          Pre-training Auto-regressive Robotic Models with 4D Representations
+        </h1>
+        <div class="publication-authors">
+          <span class="author-block"><a href="https://scholar.google.com/citations?user=AzlUrvUAAAAJ&hl=en">Dantong Niu*</a>,</span>
+          <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=1_IIcds8es4C">Yuvan Sharma*</a><sup></sup>,</span>
+          <span class="author-block"><a href="https://haoruxue.github.io/">Haoru Xue</a>,</span>
+          <span class="author-block"><a href="https://scholar.google.com/citations?user=s0Fof5IAAAAJ&hl=en">Giscard Biamby</a>,</span>
+          <span class="author-block"><a href="https://www.junyi42.com/">Junyi Zhang</a>,</span>
+          <span class="author-block"><a href="https://scholar.google.com/citations?user=VIskd7AAAAAJ&hl=zh-CN">Ziteng Ji</a>,</span>
+          <span class="author-block"><a href="https://people.eecs.berkeley.edu/~trevor/">Trevor Darrell<sup>†</sup></a>,</span>
+          <span class="author-block"><a href="https://roeiherz.github.io/">Roei Herzig<sup>†</sup></a></span>
+        </div>
+        <div class="is-size-1.2 publication-authors">
+          <span class="author-block">Berkeley AI Research, UC Berkeley</span>
+        </div>
+        <div class="is-size-1.2 publication-authors">
+          <span class="author-block">ICML 2025</span>
+        </div>
+  
+        <div class="publication-links">
+          <span class="link-block">
+            <a href="https://arxiv.org/abs/2406.11815" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="ai ai-arxiv"></i>
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://github.com/Dantong88/LLARVA" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://github.com/Dantong88/LLARVA/blob/main/docs/DATASET.md" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="far fa-images"></i>
+              </span>
+              <span>Data</span>
+            </a>
+          </span>
+        </div>
+      </div>
+      <div class="scroll-prompt">
+        <a href="#main-content">Scroll for more ↓</a>
+      </div>
+      
+    </div>
+  </section>
+  
+  <!-- Main Content -->
+  <div id=main-content class="main-container">
+    <div class="panel left">
+      <div class="left-content" id="leftContent">
+        <!-- Images will be displayed one at a time with fade transitions -->
+        <div class="image-container" id="image1">
+          <img src="static/images/arm4r_teaser.png" alt="Teaser" style="margin-top: 100px;">
+        </div>
+        <div class="image-container" id="image2">
+          <video autoplay muted loop playsinline style="margin-top: 100px; width: 100%; height: auto;">
+            <source src="static/real_videos/4d_representations.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="image-container" id="image3">
+          <img src="static/images/architecture.png" alt="Architecture" style="margin-top: 100px;">
+        </div>
+        <div class="image-container" id="image4">
+          <video autoplay muted loop playsinline style="margin-top: 100px; width: 100%; height: auto;">
+            <source src="static/real_videos/results_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>        </div>
+        <div class="image-container" id="image5">
+          <img src="static/images/arm4r_teaser.png" alt="Dataset 2">
+        </div>
+      </div>
+    </div>
+    <div class="panel right" id="rightPanel">
+        <div class="text-block" data-image="image1">
+          <h2>Abstract</h2>
+          Foundation models pre-trained on massive unlabeled datasets have revolutionized natural language and computer vision, exhibiting remarkable
+generalization capabilities, thus highlighting the
+importance of pre-training. Yet, efforts in robotics
+have struggled to achieve similar success, limited
+by either the need for costly robotic annotations or
+the lack of representations that effectively model
+the physical world. In this paper, we introduce
+ARM4R, an Auto-regressive Robotic Model that
+leverages low-level 4D Representations learned
+from human video data to yield a better pretrained robotic model. Specifically, we focus on
+utilizing 3D point tracking representations from
+videos derived by lifting 2D representations into
+3D space via monocular depth estimation across
+time. These 4D representations maintain a shared
+geometric structure between the points and robot
+state representations up to a linear transformation,
+enabling efficient transfer learning from human
+video data to low-level robotic control. Our experiments show that ARM4R can transfer efficiently
+from human video data to robotics and consistently improves performance on tasks across various robot environments and configurations.
+          <hr/>
+        </div>
+        <div class="text-block" data-image="image2">
+          <h2>4D Representations</h2>
+          <p>Our 4D representations result
+from solving the 3D point tracking problem, which involves
+finding the 3D coordinates of discrete points across time,
+given a monocular video. As shown by our experiments, pre-training on these 4D representations benefits the downstream task of robotic control. We hypothesize this is because of the shared geometric structure — up to a linear transformation — between
+the 3D points and robot state representations.</p>
+<div style="height: 2em;"></div>
+<p>These 4D representations are also generalizable enough to be usable with non-robotic data. As described in the next section, our main pre-training stage consists of egocentric human-object interaction videos.</p>
+<hr/>
+        <div class="text-block" data-image="image3">
+          <h2>Methodology</h2>
+          <p>ARM4R is trained in three stages:</p>
+          <div style="height: 2em;"></div>
+           <p><strong>Top Grey Box (Stages 1 and 2):</strong> The first two stages focus on learning a scene-wide 4D
+representation by predicting 3D points across time, where Stage 1 pre-trains on a large egocentric human dataset (EpicKitchens100), and Stage 2 fine-tunes on a smaller dataset (1-2K demonstrations) of robotic scenes. This step helps transition from the camera dynamics and
+embodiment gaps between the human video pre-training
+and the control fine-tuning in the next stage.</p>
+<div style="height: 2em;"></div>
+<p><strong>Bottom Grey Box (Stage 3):</strong> Finally, the model is fine-tuned to predict robot proprioceptive
+states rather than 3D points to enable robotic control. </p>
+<hr/>
+        </div>
+        <div class="text-block" data-image="image4">
+          <h2>Results</h2>
+          We evaluate ARM4R on 13 total tasks grouped into five categories, against several recent related works. It outperformed all tested baselines, including SoTA VLA methods &#960;<sub>0</sub> and OpenVLA. The results are presented in the table below.
+          <style>
+            table.simple-averages {
+              border-collapse: collapse;
+              width: 100%;
+              font-family: "Google Sans", sans-serif;
+              margin: 1em 0;
+              font-size: 0.85rem;
+            }
+          
+            table.simple-averages th,
+            table.simple-averages td {
+              border: 1px solid #ccc;
+              padding: 8px;
+              text-align: center;
+            }
+          
+            table.simple-averages th {
+              background-color: #f0f0f0;
+            }
+          
+            table.simple-averages .highlight {
+              background-color: #f9f9f9;
+              font-weight: bold;
+            }
+          </style>
+          <div style="height: 2em;"></div>
+
+          <h3>Average Success Rate (%) by Task Category</h3>
+          
+          <table class="simple-averages">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Pick Cube Up</th>
+                <th>Destack</th>
+                <th>Stack</th>
+                <th>Pick & Place Toys</th>
+                <th>Push Buttons</th>
+                <th>Overall Avg.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ATM</td>
+                <td>7.1</td>
+                <td>6.7</td>
+                <td>1.9</td>
+                <td>10.2</td>
+                <td>2.0</td>
+                <td>6.4</td>
+              </tr>
+              <tr>
+                <td>LLARVA</td>
+                <td>46.8</td>
+                <td>9.3</td>
+                <td>9.2</td>
+                <td>9.3</td>
+                <td>11.6</td>
+                <td>17.2</td>
+              </tr>
+              <tr>
+                <td>&#960;<sub>0</sub>-FAST</td>
+                <td>40.4</td>
+                <td>15.6</td>
+                <td>24.4</td>
+                <td>14.0</td>
+                <td>10.3</td>
+                <td>20.9</td>
+              </tr>
+              <tr>
+                <td>OpenVLA</td>
+                <td>71.8</td>
+                <td>53.5</td>
+                <td>33.2</td>
+                <td>13.4</td>
+                <td>11.6</td>
+                <td>37.2</td>
+              </tr>
+              <tr class="highlight">
+                <td>Ours</td>
+                <td>96.1</td>
+                <td>94.6</td>
+                <td>61.6</td>
+                <td>92.5</td>
+                <td>54.8</td>
+                <td>83.1</td>
+              </tr>
+            </tbody>
+          </table>
+          
+
+    </div>
+  </div>
+  <script>
+    let scrollTriggered = false;
+    let accumulatedScroll = 0;
+    const scrollThreshold = 370; // adjust as needed
+    const titleBar = document.getElementById('title-bar'); // Ensure your title bar has this id
+    
+    window.addEventListener('wheel', (event) => {
+      if (!scrollTriggered && window.scrollY < 100) {
+        accumulatedScroll += event.deltaY;
+    
+        if (accumulatedScroll > scrollThreshold) {
+          scrollTriggered = true;
+    
+          // Snap to main content
+          document.getElementById('main-content').scrollIntoView({
+            behavior: 'smooth'
+          });
+        } else {
+          event.preventDefault(); // prevent default scrolling while accumulating
+        }
+      } else if (scrollTriggered && accumulatedScroll < 0 && window.scrollY > scrollThreshold) {
+        // If we scroll up past the threshold, snap back to the title bar
+        scrollTriggered = false;
+        document.getElementById('title-bar').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', () => {
+      // Reset logic only when back at the very top
+      if (window.scrollY === 0) {
+        scrollTriggered = false;
+        accumulatedScroll = 0;
+      }
+    });
+    </script>
+    
+    
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const leftPanel = document.querySelector('.panel.left');
+  const rightPanel = document.querySelector('.panel.right');
+  const images = document.querySelectorAll(".image-container");
+  const sections = document.querySelectorAll(".text-block");
+
+  let currentImageId = null;
+
+  // Set initial styles
+  images.forEach(img => {
+    img.style.transition = "opacity 0.3s ease-in-out";
+    img.style.opacity = 0;
+    img.style.visibility = 'hidden';
+  });
+
+  // Show the first image
+  if (images.length > 0) {
+    images[0].style.opacity = 1;
+    images[0].style.visibility = 'visible';
+    currentImageId = images[0].id;
+  }
+
+  // Handle scrolling on the left panel
+  leftPanel.addEventListener('wheel', function(e) {
+    if (rightPanel.scrollTop <= 5 && e.deltaY < 0) {
+      return;
+    } else {
+      e.preventDefault();
+      rightPanel.scrollTop += e.deltaY;
+    }
+  }, { passive: false });
+
+  // Sync scroll and trigger transitions
+  rightPanel.addEventListener('scroll', function() {
+    leftPanel.scrollTop = rightPanel.scrollTop;
+    checkVisibleSections();
+  });
+
+  function checkVisibleSections() {
+    const scrollPosition = rightPanel.scrollTop;
+    const panelHeight = rightPanel.clientHeight;
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+
+      if (
+        sectionTop < scrollPosition + panelHeight * 0.7 &&
+        sectionTop + sectionHeight > scrollPosition + panelHeight * 0.3
+      ) {
+        const imageId = section.getAttribute("data-image");
+        if (imageId !== currentImageId) {
+          const newImage = document.getElementById(imageId);
+          const oldImage = currentImageId ? document.getElementById(currentImageId) : null;
+
+          if (newImage) {
+            newImage.style.visibility = 'visible';
+            newImage.style.opacity = 1;
+          }
+
+          if (oldImage && oldImage !== newImage) {
+            oldImage.style.opacity = 0;
+            // Delay hiding until after the fade transition
+            setTimeout(() => {
+              if (oldImage.style.opacity === '0') {
+                oldImage.style.visibility = 'hidden';
+              }
+            }, 500); // Match transition duration
+          }
+
+          currentImageId = imageId;
+        }
+      }
+    });
+  }
+
+  checkVisibleSections();
+});
+
+  </script>
+      <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <h2 class="title">BibTeX</h2>
+          <pre><code>@article{niu2025pre,
+            title={Pre-training auto-regressive robotic models with 4d representations},
+            author={Niu, Dantong and Sharma, Yuvan and Xue, Haoru and Biamby, Giscard and Zhang, Junyi and Ji, Ziteng and Darrell, Trevor and Herzig, Roei},
+            journal={arXiv preprint arXiv:2502.13142},
+            year={2025}
+      }</code></pre>
+        </div>
+      </section>
+</body>
+
+</html>
